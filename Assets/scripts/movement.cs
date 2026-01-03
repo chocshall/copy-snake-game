@@ -1,88 +1,69 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.InputSystem;
-public class movement : MonoBehaviour
+using UnityEngine.UI;
+
+public class Movement : MonoBehaviour
 {
-    public float moveSpeed = 1;
-    private bool startMove = true;
-    public int count = 0;
-    private float getTime;
+    public float moveSpeed = 5f;
+    public char currentDirection = 'S';
 
-    Rigidbody2D FreezePosition;
+    private Vector2 movementDirection = Vector2.down;
 
-    void Start()
-    {
-        FreezePosition = GetComponent<Rigidbody2D>();
-    }
-    // update is called every frame so if 60 frames
     void Update()
     {
-       
-
-        if (Input.GetKey(KeyCode.RightArrow) && count != 1 && startMove)
-        {
-
-            count = 0;
-            startMove = false;
-            getTime = Time.time;
-        }
-
-        if(count == 0)
-        {
-            transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
-        }
-
-        if (Input.GetKey(KeyCode.LeftArrow) && count != 0 && startMove)
-        {
-            
-            startMove = false;
-            count = 1;
-            getTime = Time.time;
-
-        }
-
-        if (count == 1)
-        {
-            transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
-        }
-
-        if (Input.GetKey(KeyCode.UpArrow) && count != 3 && startMove)
-        {
-            
-            startMove = false;
-            count = 2;
-            getTime = Time.time;
-        }
-
-        if (count == 2)
-        {
-            transform.Translate(Vector2.up * moveSpeed * Time.deltaTime);
-        }
-
-        if (Input.GetKey(KeyCode.DownArrow) && count != 2 && startMove)
-        {
-           
-            startMove = false;
-            count = 3;
-            getTime = Time.time;
-        }
-
-        if (count == 3)
-        {
-            transform.Translate(Vector2.down * moveSpeed * Time.deltaTime);
-        }
-
-
-        ClickCooldown();
-
+        // Always move in the current direction
+        transform.Translate(movementDirection * moveSpeed * Time.deltaTime);
     }
 
-    void ClickCooldown()
+    
+    public void SetDirectionUp()
     {
-        if(!startMove && Time.time - getTime > 0.2f)
+        if (movementDirection != Vector2.down)
         {
-            startMove = true;
+            movementDirection = Vector2.up;
         }
+        else
+        {
+            movementDirection = Vector2.down;
+        }
+        
+    }
+
+    public void SetDirectionDown()
+    {
+        if (movementDirection != Vector2.up)
+        {
+            movementDirection = Vector2.down;
+        }
+        else
+        {
+            movementDirection = Vector2.down;
+        }
+        
+    }
+
+    public void SetDirectionLeft()
+    {
+        if(movementDirection != Vector2.right)
+        {
+            movementDirection = Vector2.left;
+        }
+        else
+        {
+            movementDirection = Vector2.right;
+        }
+        
+    }
+
+    public void SetDirectionRight()
+    {
+        if (movementDirection != Vector2.left)
+        {
+            movementDirection = Vector2.right;
+        }
+        else
+        {
+            movementDirection = Vector2.left;
+        }
+        
     }
 }
