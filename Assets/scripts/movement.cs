@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed = 1f;
     public char currentDirection = 'S';
 
     private Vector2 movementDirection = Vector2.down;
