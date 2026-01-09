@@ -5,13 +5,26 @@ public class Movement : MonoBehaviour
 {
     public float moveSpeed = 1f;
     public char currentDirection = 'S';
-
+    public Vector2 defaultPosition;
+    public float historyBefore;
+    public float history;
+   
     private Vector2 movementDirection = Vector2.down;
 
     void Update()
     {
         // Always move in the current direction
+        
+        if(transform.position.y < -3.6f || transform.position.y > 4.8f || transform.position.x < -2f || transform.position.x > 2f)
+        {
+            ResetToDefault();
+            
+        }
+        historyBefore = transform.position.y;
         transform.Translate(movementDirection * moveSpeed * Time.deltaTime);
+        history = transform.position.y;
+
+
     }
 
     
@@ -36,7 +49,7 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            movementDirection = Vector2.down;
+            movementDirection = Vector2.up;
         }
         
     }
@@ -65,5 +78,17 @@ public class Movement : MonoBehaviour
             movementDirection = Vector2.left;
         }
         
+    }
+
+    private void Awake()
+    {
+        defaultPosition = transform.position;
+       
+    }
+
+    private void ResetToDefault()
+    {
+        transform.position = defaultPosition;
+        moveSpeed = 0f;
     }
 }
