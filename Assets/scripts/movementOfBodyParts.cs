@@ -31,7 +31,7 @@ public class MovementOfBodyParts : MonoBehaviour
 
         //transform.Translate(movementScript.historyDirection * distance);
 
-        if (player.GetComponent<Movement>().moveSpeed == 0f)
+        if (player.GetComponent<Movement>().movement == 0f)
         {
             transform.position = new Vector2(0, 0.35f);
         }
@@ -49,25 +49,25 @@ public class MovementOfBodyParts : MonoBehaviour
 
     public void ApplyPositionChange(float  position)
     {
-        if (movementScript.moveSpeed == 1f)
+        if (movementScript.movement == 1f)
         {
             //transform.position = new Vector2(transform.position.x, transform.position.y - 0.35f);
             transform.localPosition = new Vector2(0, 0 + 0.35f);
         }
 
-        if (movementScript.moveSpeed == 2f)
+        if (movementScript.movement == 2f)
         {
             //transform.position = new Vector2(transform.position.x - 0.35f, transform.position.y);
             transform.localPosition = new Vector2(0 + 0.35f,0);
         }
 
-        if (movementScript.moveSpeed == 3f)
+        if (movementScript.movement == 3f)
         {
             //transform.position = new Vector2(transform.position.x, transform.position.y + 0.35f);
             transform.localPosition = new Vector2(0, 0 - 0.35f);
         }
 
-        if (movementScript.moveSpeed == 4f)
+        if (movementScript.movement == 4f)
         {
             //transform.position = new Vector2(transform.position.x + 0.35f, transform.position.y);
             transform.localPosition = new Vector2(0 - 0.35f, 0);
