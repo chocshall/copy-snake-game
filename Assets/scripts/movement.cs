@@ -162,6 +162,8 @@ public class Movement : MonoBehaviour
         }
         for (int i = 0; i < transform.childCount; i++)
         {
+            // need to use not chil.transform, but child.transform.position to work with the transform component of the bodypart gameobject
+            // not the gameobject position
             Transform child = transform.GetChild(i);
             Vector2 childOldPosition = child.transform.position;
 
@@ -171,6 +173,22 @@ public class Movement : MonoBehaviour
             movementBefore = childOldPosition;
         }
 
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        // needed to make player rigidbody use Full kinematic contacts, otherwise it doesnt call
+        Debug.Log("wow");
+        if (collision.collider.CompareTag("food"))
+        {
+            applesEaten++;
+           
+            foreach (var item in GameObject.FindGameObjectsWithTag("food"))
+            {
+                Destroy(item);
+            }
+           
+        }
     }
 
     enum MovementType
