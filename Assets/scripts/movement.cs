@@ -1,39 +1,38 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+
 public class Movement : MonoBehaviour
 {
     public int movement = 2;
     
     public Vector2 defaultPosition;
-    public Vector2 historyBefore;
    
     public Vector2 movementDirection = Vector2.down;
-    public Vector2 historyDirection;
-    public Vector2 defaultDirection;
-
-
-    public GameObject myPrefab;
+   
+    public GameObject bodyPart;
+    public GameObject food;
     public int count = 1;
     public int applesEaten = 0;
+    public bool appleExists = false;
+    public Vector2 beforePosition;
 
 
     void Start()
     {
         InvokeRepeating(nameof(MovementBy35), 0f, 1.0f);
 
+        InvokeRepeating(nameof(SpawnApple), 0f, 4.0f);
     }
     void Update()
     {
         // Always move in the current direction
-        historyDirection = movementDirection;
-
+       
         if (transform.position.y < -3.6f || transform.position.y > 4.8f || transform.position.x < -2f || transform.position.x > 2f)
         {
             ResetToDefault();
 
         }
-        historyBefore = transform.position;
-
+       
     }
 
     public void SetDirectionUp()
@@ -96,8 +95,7 @@ public class Movement : MonoBehaviour
     private void Awake()
     {
         defaultPosition = transform.position;
-        defaultDirection = movementDirection;
-
+       
     }
 
     private void ResetToDefault()
@@ -110,19 +108,13 @@ public class Movement : MonoBehaviour
     {
 
         Vector2 movementBefore = transform.position;
+        
         // Store all children
         List<Transform> children = new List<Transform>();
         List<Vector2> childPositions = new List<Vector2>();
 
         // this only checks when it eats an apple
-        if (count == applesEaten)
-        {
-
-            GameObject newObject = Instantiate(myPrefab, movementBefore, Quaternion.identity);
-            children.Add(newObject.transform);
-            childPositions.Add(newObject.transform.position);
-            count++;
-        }
+        
         // still need the for loop because this check always on movement the positions of children
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -154,7 +146,7 @@ public class Movement : MonoBehaviour
         {
            transform.position = new Vector2(transform.position.x + distanceToMove, transform.position.y);
         }
-
+        Vector2 nextposition = movementBefore;
         for (int i = 0; i < children.Count; i++)
         {
             children[i].position = childPositions[i];
@@ -167,18 +159,44 @@ public class Movement : MonoBehaviour
             Transform child = transform.GetChild(i);
             Vector2 childOldPosition = child.transform.position;
 
-            child.transform.position = movementBefore;
-           
+            child.transform.position = nextposition;
+
             // Next child will go to this child's old position
-            movementBefore = childOldPosition;
+            nextposition = childOldPosition;
         }
+
+        if (count == applesEaten)
+        {
+            // needed to set when creating the object the parent from the get go because local position otherwise is 0 0 which is not where its supposed to be
+            GameObject newObject = Instantiate(bodyPart, this.transform, worldPositionStays: true);
+            // for better snake movement experience
+            if(applesEaten % 2 == 0)
+            {
+                newObject.GetComponent<SpriteRenderer>().material.SetColor("_Color", Color.red);
+            }
+
+            else
+            {
+                newObject.GetComponent<SpriteRenderer>().material.SetColor("_Color", Color.white);
+            }
+
+            newObject.transform.position = nextposition;
+            
+            children.Add(newObject.transform);
+            childPositions.Add(newObject.transform.position);
+            
+            count++;
+            appleExists = false;
+        }
+
+        beforePosition = movementBefore;
 
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
         // needed to make player rigidbody use Full kinematic contacts, otherwise it doesnt call
-        Debug.Log("wow");
+        
         if (collision.collider.CompareTag("food"))
         {
             applesEaten++;
@@ -188,6 +206,35 @@ public class Movement : MonoBehaviour
                 Destroy(item);
             }
            
+        }
+
+        if (collision.collider.CompareTag("body"))
+        {
+            Debug.Log("wow");
+            ResetToDefault();
+            movement = (int)MovementType.Unknown;
+            foreach (var item in GameObject.FindGameObjectsWithTag("body"))
+            {
+                Destroy(item);
+            }
+
+        }
+    }
+
+    void SpawnApple()
+    {
+        if(!appleExists)
+        {
+            Vector2 randomPosition;
+            float xRange = 2f;
+            float yRange = 3.6f;
+            float xPosition = Random.Range(0 - xRange, 0 + xRange);
+            float yPosition = Random.Range(0 - yRange, 0 + yRange);
+
+            randomPosition = new Vector2(xPosition, yPosition);
+
+            GameObject newObject = Instantiate(food, randomPosition, Quaternion.identity);
+            appleExists = true;
         }
     }
 
