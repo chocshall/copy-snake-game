@@ -162,6 +162,9 @@ MonoBehaviour:
   beforePosition: {x: 0, y: 0}
   canvas: {fileID: 1527545261}
   scoreText: {fileID: 6768863716429563242, guid: 82cbc47c5e4c217499c4a652c679e640, type: 3}
+  gameSpeed: 1
+  timeout: 0
+  oldApplecount: 0
 --- !u!212 &57443615
 SpriteRenderer:
   serializedVersion: 2

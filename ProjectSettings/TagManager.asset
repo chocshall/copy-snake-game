@@ -6,6 +6,7 @@ TagManager:
   tags:
   - body
   - food
+  - score
   layers:
   - Default
   - TransparentFX

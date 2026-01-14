@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class Movement : MonoBehaviour
 {
@@ -19,14 +18,22 @@ public class Movement : MonoBehaviour
     public Vector2 beforePosition;
     public Canvas canvas;
     public TMP_Text scoreText;
+    public float gameSpeed = 1f;
+    public bool timeout = false;
+    public int oldApplecount = 0;
+    public bool isGameActive = true;
 
 
     void Start()
     {
+        // cancels all the invokes if there any used for when the player dies
+        CancelInvoke();
+        isGameActive = true;
         scoreText.SetText("Score: " + applesEaten);
-        InvokeRepeating(nameof(MovementBy35), 0f, 1.0f);
+        InvokeRepeating(nameof(MovementBy35), 0f, gameSpeed);
 
         InvokeRepeating(nameof(SpawnApple), 0f, 4.0f);
+        
     }
     void Update()
     {
@@ -37,7 +44,6 @@ public class Movement : MonoBehaviour
             ResetToDefault();
 
         }
-       
     }
 
     public void SetDirectionUp()
@@ -105,6 +111,10 @@ public class Movement : MonoBehaviour
 
     private void ResetToDefault()
     {
+        // makes it so the game is not active and the gamespeed at this time would not get updated by other methods
+        isGameActive = false;
+        CancelInvoke();
+
         transform.position = defaultPosition;
         movement = (int)MovementType.Unknown;
         foreach (var item in GameObject.FindGameObjectsWithTag("body"))
@@ -119,6 +129,12 @@ public class Movement : MonoBehaviour
         }
         applesEaten = 0;
         count = 1;
+        gameSpeed = 1f;
+        oldApplecount = 0;
+        isGameActive = true;
+        // starts the movement again after setting the position to default after dying
+        InvokeRepeating(nameof(MovementBy35), 0f, gameSpeed);
+        InvokeRepeating(nameof(SpawnApple), 0f, 4.0f);
 
     }
 
@@ -207,7 +223,17 @@ public class Movement : MonoBehaviour
             count++;
             appleExists = false;
         }
+        
 
+        if(applesEaten % 7 == 0 && timeout == false)
+        {
+            oldApplecount = applesEaten;
+            RestartInvokeRepeating();
+        }
+        if(oldApplecount < applesEaten)
+        {
+            timeout = false;
+        }
         beforePosition = movementBefore;
 
     }
@@ -273,6 +299,27 @@ public class Movement : MonoBehaviour
         }
     }
 
+    
+    public void RestartInvokeRepeating()
+    {
+        // checks if game is active if not then doesnt do nothing with gamespeed and returns
+        if (!isGameActive) return;
+
+        if (gameSpeed -0.1f > 0 && applesEaten != 0)
+        {
+            gameSpeed = gameSpeed - 0.1f;
+            CancelInvoke(nameof(MovementBy35)); // Cancel existing
+            InvokeRepeating(nameof(MovementBy35), 0f, gameSpeed); // Start new with different timing
+            
+        }
+
+        timeout = true;
+
+
+
+    }
+
+   
     enum MovementType
     {
         Unknown = 0,
