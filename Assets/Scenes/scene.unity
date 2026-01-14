@@ -153,16 +153,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Movement
   movement: 2
   defaultPosition: {x: 0, y: 0}
-  historyBefore: {x: 0, y: 0}
   movementDirection: {x: 0, y: -1}
-  historyDirection: {x: 0, y: 0}
-  defaultDirection: {x: 0, y: 0}
   bodyPart: {fileID: 4187773861389061229, guid: c95dec939cbf4054cae7496521aa7d97, type: 3}
   food: {fileID: 3758763206526231672, guid: 3bbf5579a4e827242815e49121b6a64c, type: 3}
   count: 1
   applesEaten: 0
   appleExists: 0
   beforePosition: {x: 0, y: 0}
+  canvas: {fileID: 1527545261}
+  scoreText: {fileID: 6768863716429563242, guid: 82cbc47c5e4c217499c4a652c679e640, type: 3}
 --- !u!212 &57443615
 SpriteRenderer:
   serializedVersion: 2
@@ -894,7 +893,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

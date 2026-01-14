@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Movement : MonoBehaviour
 {
@@ -15,10 +17,13 @@ public class Movement : MonoBehaviour
     public int applesEaten = 0;
     public bool appleExists = false;
     public Vector2 beforePosition;
+    public Canvas canvas;
+    public TMP_Text scoreText;
 
 
     void Start()
     {
+        scoreText.SetText("Score: " + applesEaten);
         InvokeRepeating(nameof(MovementBy35), 0f, 1.0f);
 
         InvokeRepeating(nameof(SpawnApple), 0f, 4.0f);
@@ -26,7 +31,7 @@ public class Movement : MonoBehaviour
     void Update()
     {
         // Always move in the current direction
-       
+        
         if (transform.position.y < -3.6f || transform.position.y > 4.8f || transform.position.x < -2f || transform.position.x > 2f)
         {
             ResetToDefault();
@@ -102,6 +107,19 @@ public class Movement : MonoBehaviour
     {
         transform.position = defaultPosition;
         movement = (int)MovementType.Unknown;
+        foreach (var item in GameObject.FindGameObjectsWithTag("body"))
+        {
+            Destroy(item);
+        }
+
+
+        foreach (var item in GameObject.FindGameObjectsWithTag("score"))
+        {
+            Destroy(item);
+        }
+        applesEaten = 0;
+        count = 1;
+
     }
 
     private void MovementBy35()
@@ -167,6 +185,7 @@ public class Movement : MonoBehaviour
 
         if (count == applesEaten)
         {
+           
             // needed to set when creating the object the parent from the get go because local position otherwise is 0 0 which is not where its supposed to be
             GameObject newObject = Instantiate(bodyPart, this.transform, worldPositionStays: true);
             // for better snake movement experience
@@ -199,24 +218,40 @@ public class Movement : MonoBehaviour
         
         if (collision.collider.CompareTag("food"))
         {
+            
             applesEaten++;
            
             foreach (var item in GameObject.FindGameObjectsWithTag("food"))
             {
                 Destroy(item);
+
             }
-           
+            scoreText.SetText("Score: " + applesEaten);
+            foreach (var item in GameObject.FindGameObjectsWithTag("score"))
+            {
+                Destroy(item);
+            }
+            Instantiate(scoreText);
+            foreach (var item in GameObject.FindGameObjectsWithTag("score"))
+            {
+                item.transform.SetParent(canvas.transform, true);
+            }
         }
 
         if (collision.collider.CompareTag("body"))
         {
             Debug.Log("wow");
             ResetToDefault();
-            movement = (int)MovementType.Unknown;
-            foreach (var item in GameObject.FindGameObjectsWithTag("body"))
+            
+            
+            
+            scoreText.SetText("Score: " + 0);
+            Instantiate(scoreText);
+            foreach (var item in GameObject.FindGameObjectsWithTag("score"))
             {
-                Destroy(item);
+                item.transform.SetParent(canvas.transform, true);
             }
+            
 
         }
     }
