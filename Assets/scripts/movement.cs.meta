@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: 80a0492f3b93796469cad64066904e47
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - bodyPart: {fileID: 4187773861389061229, guid: c95dec939cbf4054cae7496521aa7d97, type: 3}
+  - food: {fileID: 3758763206526231672, guid: 3bbf5579a4e827242815e49121b6a64c, type: 3}
+  - canvas: {fileID: 5157111037830642835, guid: aa342ffa9b803e6479ebae703c1c3169, type: 3}
+  - scoreText: {fileID: 6768863716429563242, guid: 82cbc47c5e4c217499c4a652c679e640, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

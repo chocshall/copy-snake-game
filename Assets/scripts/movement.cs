@@ -10,14 +10,16 @@ public class Movement : MonoBehaviour
    
     public Vector2 movementDirection = Vector2.down;
    
-    public GameObject bodyPart;
-    public GameObject food;
+    //public GameObject bodyPart;
+    //public GameObject food;
+    private GameObject bodyPart;
+    private GameObject food;
+    public TMP_Text scoreText;
     public int count = 1;
     public int applesEaten = 0;
     public bool appleExists = false;
     public Vector2 beforePosition;
-    public Canvas canvas;
-    public TMP_Text scoreText;
+   
     public float gameSpeed = 1f;
     public bool timeout = false;
     public int oldApplecount = 0;
@@ -26,10 +28,17 @@ public class Movement : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("=== DEBUG ===");
+       
+
         // cancels all the invokes if there any used for when the player dies
         CancelInvoke();
         isGameActive = true;
-        scoreText.SetText("Score: " + applesEaten);
+
+       
+            
+
+
         InvokeRepeating(nameof(MovementBy35), 0f, gameSpeed);
 
         InvokeRepeating(nameof(SpawnApple), 0f, 4.0f);
@@ -39,7 +48,7 @@ public class Movement : MonoBehaviour
     {
         // Always move in the current direction
         
-        if (transform.position.y < -3.6f || transform.position.y > 4.8f || transform.position.x < -2f || transform.position.x > 2f)
+        if (transform.position.y < -3.4f || transform.position.y > 4.8f || transform.position.x < -2.35f || transform.position.x > 2.35f)
         {
             ResetToDefault();
 
@@ -106,7 +115,14 @@ public class Movement : MonoBehaviour
     private void Awake()
     {
         defaultPosition = transform.position;
+        bodyPart = Resources.Load<GameObject>("bodypart");
+        food = Resources.Load<GameObject>("apple");
        
+        
+        if (bodyPart == null)
+            Debug.LogError("BodyPart prefab not found in Resources!");
+        if (food == null)
+            Debug.LogError("Food prefab not found in Resources!");
     }
 
     private void ResetToDefault()
@@ -122,15 +138,12 @@ public class Movement : MonoBehaviour
             Destroy(item);
         }
 
-
-        foreach (var item in GameObject.FindGameObjectsWithTag("score"))
-        {
-            Destroy(item);
-        }
         applesEaten = 0;
         count = 1;
         gameSpeed = 1f;
         oldApplecount = 0;
+        scoreText.text = "Score: 0";
+        scoreText.ForceMeshUpdate();
         isGameActive = true;
         // starts the movement again after setting the position to default after dying
         InvokeRepeating(nameof(MovementBy35), 0f, gameSpeed);
@@ -201,7 +214,6 @@ public class Movement : MonoBehaviour
 
         if (count == applesEaten)
         {
-           
             // needed to set when creating the object the parent from the get go because local position otherwise is 0 0 which is not where its supposed to be
             GameObject newObject = Instantiate(bodyPart, this.transform, worldPositionStays: true);
             // for better snake movement experience
@@ -246,38 +258,23 @@ public class Movement : MonoBehaviour
         {
             
             applesEaten++;
-           
+
+            scoreText.text = "Score: " + applesEaten;
+            scoreText.ForceMeshUpdate();
             foreach (var item in GameObject.FindGameObjectsWithTag("food"))
             {
                 Destroy(item);
 
             }
-            scoreText.SetText("Score: " + applesEaten);
-            foreach (var item in GameObject.FindGameObjectsWithTag("score"))
-            {
-                Destroy(item);
-            }
-            Instantiate(scoreText);
-            foreach (var item in GameObject.FindGameObjectsWithTag("score"))
-            {
-                item.transform.SetParent(canvas.transform, true);
-            }
+           
+            
         }
 
         if (collision.collider.CompareTag("body"))
         {
             Debug.Log("wow");
             ResetToDefault();
-            
-            
-            
-            scoreText.SetText("Score: " + 0);
-            Instantiate(scoreText);
-            foreach (var item in GameObject.FindGameObjectsWithTag("score"))
-            {
-                item.transform.SetParent(canvas.transform, true);
-            }
-            
+
 
         }
     }
@@ -288,7 +285,7 @@ public class Movement : MonoBehaviour
         {
             Vector2 randomPosition;
             float xRange = 2f;
-            float yRange = 3.6f;
+            float yRange = 3.3f;
             float xPosition = Random.Range(0 - xRange, 0 + xRange);
             float yPosition = Random.Range(0 - yRange, 0 + yRange);
 
