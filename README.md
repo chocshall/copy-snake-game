@@ -24,6 +24,6 @@ Required Modules
 
 Build:
 
-* bash 
+* git for windows
 * https://github.com/chocshall/copy-snake-game.git
 * cd copy-snake-game
