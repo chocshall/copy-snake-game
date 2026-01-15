@@ -8,6 +8,17 @@ Gameplay : https://youtu.be/iVktIHrlNtw
 
 ![die](https://github.com/user-attachments/assets/5ba1def1-6504-4ad2-ab80-1fbdd56ccf91)
 
+Features:
+
+    Movement is grid based, moves every second.
+    When snake head touches spawned apple, it gets destroyed, and then a body part gets spawned to the last position of the whole body.
+    Score system, keeps track of current run eaten apples, starts from 0
+    Touching a body part or the boundaries resets the player to the start position, resets the score, destroys all body parts, except head.
+    Every seventh apple eaten the game speed by 1/10th second , until the game reaches the maximum of game speed of a 1/10th second from the beginning of 1 second.
+
+Known issues:
+The game was made in mind that the resolution would be 1080x1920
+So if the resolution of the phone is larger of smaller the buttons or the score can be placed out of place.
 
 Download apk : https://github.com/chocshall/copy-snake-game/releases/tag/v1.0.0
 
