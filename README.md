@@ -33,3 +33,4 @@ Build:
 * git for windows
 * https://github.com/chocshall/copy-snake-game.git
 * cd copy-snake-game
+* when loaded on unity press scenes and click on scene
