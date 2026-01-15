@@ -13,11 +13,15 @@ Unity version: Unity 6.3 LTS (6000.3.2f1)
 
 Download: https://unity.com/releases/editor/archive
 
-Required Modules
-
 When installing Unity, add:
+
+Required Modules
 
 * Windows Build Support
 * Android Build Support
 * WebGL Build Support
 * Microsoft Visual studio Community 2022
+
+* bash 
+* https://github.com/chocshall/copy-snake-game.git
+* cd copy-snake-game
