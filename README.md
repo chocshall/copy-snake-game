@@ -4,6 +4,10 @@ Making a snake game that was used on nokia old phones
 Gameplay : https://youtu.be/iVktIHrlNtw
 ![eatingapple](https://github.com/user-attachments/assets/3680087f-cb29-4db9-ae5d-5a70be963cc7)
 
+![speedincrease](https://github.com/user-attachments/assets/588970d5-5fbe-428a-9cb8-b1fcd3d52f4e)
+
+![die](https://github.com/user-attachments/assets/5ba1def1-6504-4ad2-ab80-1fbdd56ccf91)
+
 
 Download apk : https://github.com/chocshall/copy-snake-game/releases/tag/v1.0.0
 
